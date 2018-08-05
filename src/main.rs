@@ -108,3 +108,52 @@ fn main() {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_include() {
+        let s = StatusCode {
+            code: "200".to_string(),
+            phrase: "OK".to_string(),
+            description: "foobar".to_string(),
+            spec_title: "".to_string(),
+            spec_href: "".to_string(),
+        };
+        assert!(s.include("OK"));
+        assert!(!s.include("NG"));
+        assert!(s.include("foo"));
+    }
+
+    #[test]
+    fn it_get_codes_by_code() {
+        let s = StatusCode {
+            code: "200".to_string(),
+            phrase: "OK".to_string(),
+            description: "foobar".to_string(),
+            spec_title: "".to_string(),
+            spec_href: "".to_string(),
+        };
+        let codes = vec![s];
+        assert!(get_codes_by_code(&codes, "200").is_ok());
+        assert!(get_codes_by_code(&codes, "OK").is_err());
+        assert!(get_codes_by_code(&codes, "foobar").is_err());
+    }
+
+    #[test]
+    fn it_get_codes_by_keyword() {
+        let s = StatusCode {
+            code: "100".to_string(),
+            phrase: "Continue".to_string(),
+            description: "foobar".to_string(),
+            spec_title: "".to_string(),
+            spec_href: "".to_string(),
+        };
+        let codes = vec![s];
+        assert!(get_codes_by_keyword(&codes, "Continue").is_ok());
+        assert!(get_codes_by_keyword(&codes, "100").is_ok());
+        assert!(get_codes_by_keyword(&codes, "foobar").is_ok());
+    }
+}
