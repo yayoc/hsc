@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate clap;
 #[macro_use]
 extern crate serde_derive;
@@ -66,10 +67,10 @@ fn print(codes: &Vec<StatusCode>) {
 }
 
 fn main() {
-    let matches = App::new("hsc")
-        .version("0.1.0")
-        .author("Nobuhide Yayoshi <n.yayoshi@gmail.com>")
-        .about("Explains the meaning of HTTP status code written in Rust")
+    let matches = App::new(crate_name!())
+        .version(crate_version!())
+        .author(crate_authors!())
+        .about(crate_description!())
         .arg(
             Arg::with_name("CODE")
                 .required(false)
